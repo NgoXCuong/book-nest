@@ -1,0 +1,23 @@
+# Bỏ qua thư viện nặng
+node_modules/
+*/node_modules/
+
+# Bỏ qua file môi trường (Bảo mật key, mật khẩu DB)
+.env
+*/.env
+*.env.local
+
+# Bỏ qua file build
+dist/
+build/
+*/dist/
+*/build/
+
+# Bỏ qua file log lỗi
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
