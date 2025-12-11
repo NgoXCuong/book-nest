@@ -56,6 +56,7 @@ class CategoryController {
     let imageCategory = findCategory.imageCategory;
 
     if (req.file) {
+      const oldPublicId = getPublicId(findCategory.imageCategory);
       const { path, filename } = req.file;
 
       const { url } = await cloudinary.uploader.upload(path, {
@@ -67,7 +68,7 @@ class CategoryController {
 
       await fs.unlink(path);
 
-      await cloudinary.uploader.destroy(getPublicId(imageCategory));
+      await cloudinary.uploader.destroy(oldPublicId);
     }
 
     const updateCategory = await categoryModel.findByIdAndUpdate(

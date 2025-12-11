@@ -6,7 +6,7 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "src/uploads/categorys");
+    cb(null, "src/uploads/products");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -18,25 +18,24 @@ const upload = multer({ storage: storage });
 const { asyncHandler } = require("../auth/checkAuth");
 const { authAdmin } = require("../middleware/authUser");
 
-const categoryController = require("../controllers/category.controller");
+const productController = require("../controllers/product.controller");
 
 router.post(
   "/create",
   authAdmin,
-  upload.single("imageCategory"),
-  asyncHandler(categoryController.createCategory)
+  upload.array("imagesProduct", 100),
+  asyncHandler(productController.createProduct)
 );
-router.get("/list", asyncHandler(categoryController.getAllCategory));
+
+router.get("/list", asyncHandler(productController.getAllProducts));
+
+router.get("/detail/:id", asyncHandler(productController.getProductById));
+
 router.put(
   "/update/:id",
   authAdmin,
-  upload.single("imageCategory"),
-  asyncHandler(categoryController.updateCategory)
-);
-router.delete(
-  "/delete/:id",
-  authAdmin,
-  asyncHandler(categoryController.deleteCategory)
+  upload.any(),
+  asyncHandler(productController.updateProduct)
 );
 
 module.exports = router;
