@@ -4,6 +4,8 @@ const { BadRequestError, NotFoundError } = require("../core/error.response");
 const productModel = require("../models/product.model");
 const fs = require("fs/promises");
 
+const getPublicId = require("../utils/getPublicId");
+
 class ProductController {
   async createProduct(req, res) {
     const dataImages = req.files;
@@ -169,6 +171,28 @@ class ProductController {
     return new OK({
       message: "Lấy sản phẩm thành công",
       metadata: product,
+    }).send(res);
+  }
+
+  async deleteProduct(req, res) {
+    const { id } = req.params;
+    if (!id) {
+      throw new BadRequestError("Thiếu thông tin sản phẩm");
+    }
+    const findProduct = await productModel.findById(id);
+    if (!findProduct) {
+      throw new NotFoundError("Xóa sản phẩm thất bại");
+    }
+
+    for (const image of findProduct.imagesProduct) {
+      await cloudinary.uploader.destroy(getPublicId(image));
+    }
+
+    await findProduct.deleteOne();
+
+    return new OK({
+      message: "Xóa sản phẩm thành công",
+      metadata: findProduct,
     }).send(res);
   }
 }

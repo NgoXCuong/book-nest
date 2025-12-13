@@ -132,7 +132,7 @@ class UsersRegister {
     }
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
-    res.clearCookie("logged");
+    res.clearCookie("logger");
 
     return new OK({
       message: "Đăng xuất thành công",

@@ -38,4 +38,10 @@ router.put(
   asyncHandler(productController.updateProduct)
 );
 
+router.delete(
+  "/delete/:id",
+  authAdmin,
+  asyncHandler(productController.deleteProduct)
+);
+
 module.exports = router;
